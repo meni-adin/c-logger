@@ -1,0 +1,27 @@
+---
+Checks: >-
+  *,
+  -abseil-*,
+  -altera-*,
+  -android-*,
+  -cppcoreguidelines-*,
+  -fuchsia-*,
+  -google-*,
+  -llvm*,
+  -zircon-*,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -clang-diagnostic-cast-qual,
+  -clang-diagnostic-declaration-after-statement,
+  -clang-diagnostic-error,
+  -clang-diagnostic-unsafe-buffer-usage,
+  -misc-non-private-member-variables-in-classes,
+  -modernize-use-trailing-return-type,
+  -modernize-use-using,
+  -performance-enum-size,
+  -readability-else-after-return,
+  -readability-function-cognitive-complexity,
+  -readability-isolate-declaration,
+HeaderFilterRegex: '.*'
+
+# Notes:
+# - Maybe bring back `readability-function-cognitive-complexity`.
