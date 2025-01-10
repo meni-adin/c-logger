@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.28)
 project(c_logger
     LANGUAGES C CXX
 )
+string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UC)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
@@ -15,10 +16,11 @@ endif()
 message(STATUS "CMAKE_C_COMPILER_ID: ${CMAKE_C_COMPILER_ID}")
 message(STATUS "CMAKE_CXX_COMPILER_ID: ${CMAKE_CXX_COMPILER_ID}")
 
-if(NOT DEFINED C_LOGGER_SAFE_MODE)
-    message(FATAL_ERROR "C_LOGGER_SAFE_MODE must be set to either TRUE or FALSE")
+if(NOT DEFINED ${PROJECT_NAME_UC}_SAFE_MODE)
+    message(FATAL_ERROR "${PROJECT_NAME_UC}_SAFE_MODE must be set to either TRUE or FALSE")
 endif()
-message(STATUS "C_LOGGER_SAFE_MODE: ${C_LOGGER_SAFE_MODE}")
+message(STATUS "${PROJECT_NAME_UC}_SAFE_MODE: ${${PROJECT_NAME_UC}_SAFE_MODE}")
+set(C_ERRORS_SAFE_MODE ${${PROJECT_NAME_UC}_SAFE_MODE} CACHE BOOL "")
 
 set(CONFIG_FILE_NAME "${PROJECT_NAME}_config.h")
 set(CONFIG_DIR_NAME configurations)
@@ -49,4 +51,6 @@ endif()
 include(CTest)
 
 add_subdirectory(src)
-add_subdirectory(test)
+if(${PROJECT_NAME_UC}_ENABLE_TESTS)
+    add_subdirectory(test)
+endif()
