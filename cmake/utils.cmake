@@ -41,6 +41,7 @@ function(set_target_c_compiler_flags target)
             /WX
             /wd4710
             /wd4711
+            /wd4820
             /wd5045
             /wd5072
         )
