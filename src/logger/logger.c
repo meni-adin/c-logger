@@ -96,9 +96,9 @@ void Logger_log(Logger_LoggingLevel_t loggingLevel, const char *file, int line, 
     (void)loggingLevel;
     (void)g_Logger_logLevelToStrMap;
 
-    fprintf(stdout, "%20s::%4d::%-20s:", file, line, func);
+    (void)fprintf(stdout, "%20s::%4d::%-20s:", file, line, func);
     va_list args;
     va_start(args, format);
-    vfprintf(stdout, format, args);
+    (void)vfprintf(stdout, format, args);  // NOLINT (allow non-literal string as format)
     va_end(args);
 }
