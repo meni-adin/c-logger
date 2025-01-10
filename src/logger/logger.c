@@ -5,12 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#if defined(_WIN32)
-# define LOGGER_PATH_SEPARATOR '\\'
-#elif defined(__APPLE__) || defined(__linux__)
-# define LOGGER_PATH_SEPARATOR '/'
-#endif  // OS
-
 #define IS_VALID_LOGGING_LEVEL(loggingLevel) ((LOGGING_LEVEL_DEBUG <= (loggingLevel)) && ((loggingLevel) < LOGGING_LEVEL_COUNT))
 
 typedef struct Logger_internalState_t_ {
@@ -92,13 +86,19 @@ status_t Logger_addOutputStream(Logger_StreamConfig_t streamConfig) {
     return SUCCESS;
 }
 
+// #if defined(_WIN32)
+// # define LOGGER_PATH_SEPARATOR '\\'
+// #elif defined(__APPLE__) || defined(__linux__)
+// # define LOGGER_PATH_SEPARATOR '/'
+// #endif  // OS
+
 void Logger_log(Logger_LoggingLevel_t loggingLevel, const char *file, int line, const char *func, const char *format, ...) {
     (void)loggingLevel;
     (void)g_Logger_logLevelToStrMap;
 
-    fprintf(stdout, "%20s::%4d::%-20s:", file, line, func);
+    (void)fprintf(stdout, "%20s::%4d::%-20s:", file, line, func);
     va_list args;
     va_start(args, format);
-    vfprintf(stdout, format, args);
+    (void)vfprintf(stdout, format, args);  // NOLINT (allow non-literal string as format)
     va_end(args);
 }
