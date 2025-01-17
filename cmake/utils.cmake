@@ -28,6 +28,16 @@ function(set_target_c_compiler_flags target)
             -Wdouble-promotion
             -Wimplicit-fallthrough
         )
+        if(${PROJECT_NAME_UC}_ENABLE_COVERAGE)
+            target_compile_options(${target} PRIVATE
+            -fprofile-arcs
+            -ftest-coverage
+            )
+            target_link_options(${target} PRIVATE
+            -fprofile-arcs
+            -ftest-coverage
+            )
+        endif()
         if(CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
         endif()
         if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
@@ -51,23 +61,35 @@ else()
 endfunction()
 
 function(set_target_cpp_compiler_flags target)
-    if((CMAKE_C_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
-        if(CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+    if((CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
+        if(${PROJECT_NAME_UC}_ENABLE_COVERAGE)
+            target_compile_options(${target} PRIVATE
+                -fprofile-arcs
+                -ftest-coverage
+            )
+            target_link_options(${target} PRIVATE
+                -fprofile-arcs
+                -ftest-coverage
+            )
         endif()
-        if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         endif()
-    elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        endif()
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         target_compile_options(${target} PRIVATE
             /Wall
             /WX
+            /wd4625
             /wd4626
             /wd4710
             /wd4711
+            /wd5026
             /wd5027
             /wd5072
         )
     else()
-        message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")
+        message(FATAL_ERROR "Unknown C++ compiler: ${CMAKE_CXX_COMPILER_ID}")
     endif()
 endfunction()
 
@@ -98,4 +120,33 @@ function(enable_sanitizers)
             endif()
         endforeach()
     endif()
+endfunction()
+
+function(remove_cmakefiles_directories)
+    message(STATUS "Removing 'CMakeFiles' directories to enable regeneration of coverage related files")
+    file(GLOB_RECURSE CMAKEFILES_DIRS LIST_DIRECTORIES YES "${CMAKE_BINARY_DIR}/*")
+
+    set(CMAKEFILES_DIRS_TO_REMOVE "")
+    foreach(DIR ${CMAKEFILES_DIRS})
+        get_filename_component(DIR_NAME ${DIR} NAME)
+        get_filename_component(PARENT_NAME ${DIR} DIRECTORY)
+        if(DIR_NAME STREQUAL "CMakeFiles" AND IS_DIRECTORY ${DIR})
+            if (PARENT_NAME STREQUAL CMAKE_BINARY_DIR)
+                message(STATUS "Skipping top-level 'CMakeFiles' directory")
+                continue()
+            endif()
+            list(APPEND CMAKEFILES_DIRS_TO_REMOVE ${DIR})
+        endif()
+    endforeach()
+
+    if(NOT CMAKEFILES_DIRS_TO_REMOVE)
+        message(STATUS "No 'CMakeFiles' directories to remove")
+    endif()
+
+    foreach(DIR ${CMAKEFILES_DIRS_TO_REMOVE})
+        message(STATUS "Removing directory: ${DIR}")
+        file(REMOVE_RECURSE ${DIR})
+    endforeach()
+
+    message(STATUS "Done Removing 'CMakeFiles' directories")
 endfunction()
