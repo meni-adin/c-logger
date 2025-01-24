@@ -12,10 +12,11 @@ Checks: >-
   -bugprone-easily-swappable-parameters,
   -bugprone-suspicious-realloc-usage,
   -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
-  -clang-diagnostic-c++98-compat-pedantic
+  -clang-diagnostic-c++98-compat-pedantic,
   -clang-diagnostic-cast-qual,
   -clang-diagnostic-declaration-after-statement,
   -clang-diagnostic-error,
+  -clang-diagnostic-pre-c++20-compat-pedantic,
   -clang-diagnostic-unsafe-buffer-usage,
   -misc-include-cleaner,
   -misc-non-private-member-variables-in-classes,
