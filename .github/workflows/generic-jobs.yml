@@ -29,7 +29,8 @@ jobs:
           arch: x64
       - name: Set-up (macOS)
         if:   runner.os == 'macOS'
-        run:  brew install ninja
+        run:  |
+          brew install ninja
       - name:  Run Python script
         shell: bash
         run:   python scripts/build_and_test.py -b ${{ inputs.build_type }}

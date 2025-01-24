@@ -15,5 +15,5 @@ target_link_libraries(${TARGET_NAME}
     logger
 )
 
-set_target_cpp_compiler_flags(${TARGET_NAME})
+cmake_language(CALL ${PROJECT_NAME}_set_target_cpp_compiler_flags ${TARGET_NAME})
 gtest_discover_tests(${TARGET_NAME})
