@@ -10,3 +10,6 @@ build
 
 # python cache
 __pycache__
+
+# Notes file
+_notes.md

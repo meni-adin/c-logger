@@ -40,7 +40,7 @@ status_t Logger_deinit(void);
 
 status_t Logger_addOutputStream(Logger_StreamConfig_t streamConfig);
 
-void Logger_log(Logger_LoggingLevel_t logLevel, const char *file, int line, const char *func, const char *format, ...);
+void Logger_log(Logger_LoggingLevel_t loggingLevel, const char *file, int line, const char *func, const char *format, ...);
 
 #ifdef __cplusplus
 }

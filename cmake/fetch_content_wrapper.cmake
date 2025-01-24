@@ -2,7 +2,7 @@ include(FetchContent)
 
 file(TO_CMAKE_PATH "${CMAKE_BINARY_DIR}/external" FETCH_CONTENT_WRAPPER_EXTERNAL_DIR)
 
-function(content_url_to_local_path url var_prefix)
+function(${PROJECT_NAME}_content_url_to_local_path url var_prefix)
     # Ensure URL format is as expected
     string(REGEX MATCH "^https://([^/]+)/([^/]+)/([^/]+).git$" whole_url ${url})
     if (NOT "${url}" STREQUAL "${whole_url}")
@@ -31,7 +31,7 @@ endfunction()
 
 # Note: ARGV0 which sets the name for the external library, has no effect if the function doesn't fall-back to FetchContent.
 #       Same for GIT_TAG.
-function(fetch_content_wrapper)
+function(${PROJECT_NAME}_fetch_content_wrapper)
     set(options)
     set(oneValueArgs GIT_REPOSITORY GIT_TAG)
     set(multiValueArgs)
@@ -45,7 +45,7 @@ function(fetch_content_wrapper)
         message(FATAL_ERROR "GIT_TAG argument is required.")
     endif()
 
-    content_url_to_local_path("${FETCH_CONTENT_WRAPPER_GIT_REPOSITORY}" "FETCH_CONTENT_WRAPPER")
+    cmake_language(CALL ${PROJECT_NAME}_content_url_to_local_path "${FETCH_CONTENT_WRAPPER_GIT_REPOSITORY}" "FETCH_CONTENT_WRAPPER")
     get_filename_component(PROJECT_PARENT_DIR "${CMAKE_SOURCE_DIR}" DIRECTORY)
     file(TO_CMAKE_PATH "${PROJECT_PARENT_DIR}/${FETCH_CONTENT_WRAPPER_LOCAL_PATH}" content_local_path)
 
@@ -82,7 +82,7 @@ function(fetch_content_wrapper)
     endif()
 endfunction()
 
-macro(init_fetch_content_wrapper)
+macro(${PROJECT_NAME}_init_fetch_content_wrapper)
     set(FETCHCONTENT_QUIET FALSE)
     if(("${CMAKE_CURRENT_SOURCE_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}") AND (EXISTS "${FETCH_CONTENT_WRAPPER_EXTERNAL_DIR}"))
         message(STATUS "Removing ${FETCH_CONTENT_WRAPPER_EXTERNAL_DIR} left from previous run")

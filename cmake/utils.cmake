@@ -1,4 +1,4 @@
-function(set_compiler_flags)
+function(${PROJECT_NAME}_set_compiler_flags)
     if((CMAKE_C_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
         if(CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
         endif()
@@ -13,7 +13,7 @@ else()
     endif()
 endfunction()
 
-function(set_target_c_compiler_flags target)
+function(${PROJECT_NAME}_set_target_c_compiler_flags target)
     if((CMAKE_C_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
         target_compile_options(${target} PRIVATE
             -Werror
@@ -28,6 +28,16 @@ function(set_target_c_compiler_flags target)
             -Wdouble-promotion
             -Wimplicit-fallthrough
         )
+        if(${PROJECT_NAME_UC}_ENABLE_COVERAGE)
+            target_compile_options(${target} PRIVATE
+            -fprofile-arcs
+            -ftest-coverage
+            )
+            target_link_options(${target} PRIVATE
+            -fprofile-arcs
+            -ftest-coverage
+            )
+        endif()
         if(CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
         endif()
         if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
@@ -41,6 +51,7 @@ function(set_target_c_compiler_flags target)
             /WX
             /wd4710
             /wd4711
+            /wd4820
             /wd5045
             /wd5072
         )
@@ -49,28 +60,41 @@ else()
     endif()
 endfunction()
 
-function(set_target_cpp_compiler_flags target)
-    if((CMAKE_C_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
-        if(CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+function(${PROJECT_NAME}_set_target_cpp_compiler_flags target)
+    if((CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
+        if(${PROJECT_NAME_UC}_ENABLE_COVERAGE)
+            target_compile_options(${target} PRIVATE
+                -fprofile-arcs
+                -ftest-coverage
+            )
+            target_link_options(${target} PRIVATE
+                -fprofile-arcs
+                -ftest-coverage
+            )
         endif()
-        if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         endif()
-    elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        endif()
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         target_compile_options(${target} PRIVATE
             /Wall
             /WX
+            /wd4625
             /wd4626
             /wd4710
             /wd4711
+            /wd4820
+            /wd5026
             /wd5027
             /wd5072
         )
     else()
-        message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")
+        message(FATAL_ERROR "Unknown C++ compiler: ${CMAKE_CXX_COMPILER_ID}")
     endif()
 endfunction()
 
-function(enable_sanitizers)
+function(${PROJECT_NAME}_enable_sanitizers)
     if((CMAKE_C_COMPILER_ID STREQUAL "AppleClang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
         add_compile_options(-fsanitize=address -fno-omit-frame-pointer)
         add_link_options(-fsanitize=address)
@@ -97,4 +121,17 @@ function(enable_sanitizers)
             endif()
         endforeach()
     endif()
+endfunction()
+
+function(${PROJECT_NAME}_delete_gcda_files)
+    message(STATUS "Deleting all '.gcda' files in the build directory, to enable regeneration of coverage related files")
+
+    file(GLOB_RECURSE GCDA_FILES "${CMAKE_CURRENT_BINARY_DIR}/*.gcda")
+    foreach(GCDA_FILE ${GCDA_FILES})
+        # Note: currently also deleting files in the 'external' directory
+        message(STATUS "Deleting file: ${GCDA_FILE}")
+        file(REMOVE ${GCDA_FILE})
+    endforeach()
+
+    message(STATUS "Done Removing 'CMakeFiles' directories")
 endfunction()
