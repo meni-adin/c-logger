@@ -5,7 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define IS_VALID_LOGGING_LEVEL(loggingLevel) ((LOGGING_LEVEL_DEBUG <= (loggingLevel)) && ((loggingLevel) < LOGGING_LEVEL_COUNT))
+#ifdef C_LOGGER_SAFE_MODE
+ #define IS_VALID_LOGGING_LEVEL(loggingLevel) ((LOGGING_LEVEL_DEBUG <= (loggingLevel)) && ((loggingLevel) < LOGGING_LEVEL_COUNT))
+#endif  // C_LOGGER_SAFE_MODE
 
 typedef struct Logger_internalState_t_ {
     Logger_StreamConfig_t *streamsArr;
