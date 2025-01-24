@@ -24,7 +24,7 @@ TEST_F(LoggerTest, InitAndDeinit) {
 }
 
 TEST_F(LoggerTest, AddStdout) {
-    const Logger_StreamConfig_t streamConfig = {
+    const Logger_StreamConfig_t streamConfig {
         .stream            = stdout,
         .loggingLevel      = LOGGING_LEVEL_DEBUG,
         .isSupportingColor = true};

@@ -12,6 +12,7 @@ Checks: >-
   -bugprone-easily-swappable-parameters,
   -bugprone-suspicious-realloc-usage,
   -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  -clang-diagnostic-c++98-compat-pedantic
   -clang-diagnostic-cast-qual,
   -clang-diagnostic-declaration-after-statement,
   -clang-diagnostic-error,
