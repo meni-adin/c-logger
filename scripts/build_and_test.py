@@ -51,7 +51,7 @@ def run_coverage_test(build_type):
 
     for gcda_file in gcda_files:
         outputFileDir = Path(gcda_file).parent
-        command = f'gcov -n {gcda_file}'
+        command = f'gcov {gcda_file}'
         result = utils.run_command(command, shell=True, cwd=outputFileDir, capture_output=True, text=True)
         if result.returncode != 0:
             utils.colored_print(result.stderr)

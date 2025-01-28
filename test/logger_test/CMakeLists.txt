@@ -12,6 +12,7 @@ add_executable(${TARGET_NAME}
 
 target_link_libraries(${TARGET_NAME}
     GTest::gmock
+    mock_wrapper
     logger
 )
 
