@@ -6,14 +6,10 @@ function(${PROJECT_NAME}_set_compiler_flags)
         endif()
     elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
         add_compile_options(
+            /Qspectre
+            /wd5045
             /wd5072
         )
-        if(SANITIZED_BUILD)
-            add_compile_options(
-                /Qspectre
-                /wd5045
-            )
-        endif()
 else()
         message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")
     endif()
