@@ -19,6 +19,7 @@ Checks: >-
   -clang-diagnostic-error,
   -clang-diagnostic-pre-c++20-compat-pedantic,
   -clang-diagnostic-unsafe-buffer-usage,
+  -clang-diagnostic-unused-command-line-argument,
   -misc-include-cleaner,
   -misc-non-private-member-variables-in-classes,
   -modernize-use-trailing-return-type,
