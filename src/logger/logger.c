@@ -5,16 +5,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "mock_wrapper.h"
+
 #ifdef C_LOGGER_SAFE_MODE
- #define IS_VALID_LOGGING_LEVEL(loggingLevel) ((LOGGING_LEVEL_DEBUG <= (loggingLevel)) && ((loggingLevel) < LOGGING_LEVEL_COUNT))
+# define IS_VALID_LOGGING_LEVEL(loggingLevel) ((LOGGING_LEVEL_DEBUG <= (loggingLevel)) && ((loggingLevel) < LOGGING_LEVEL_COUNT))
 #endif  // C_LOGGER_SAFE_MODE
 
-typedef struct Logger_internalState_t_ {
+typedef struct Logger_InternalState_t_ {
     Logger_StreamConfig_t *streamsArr;
     size_t                 streamsArrLen;
-} Logger_internalState_t;
+} Logger_InternalState_t;
 
-static Logger_internalState_t *g_Logger_internalState;
+static Logger_InternalState_t *g_Logger_internalState;
 
 static const char *g_Logger_logLevelToStrMap[] = {
     [LOGGING_LEVEL_DEBUG]    = "DEBUG",
@@ -35,12 +37,12 @@ status_t Logger_init(void) {
     }
 #endif  // C_LOGGER_SAFE_MODE
 
-    g_Logger_internalState = malloc(sizeof(*g_Logger_internalState));
+    g_Logger_internalState = MW_malloc(sizeof(*g_Logger_internalState));
     if (g_Logger_internalState == NULL) {
         return ERR_MEM_ALLOC;
     }
 
-    *g_Logger_internalState = (Logger_internalState_t){
+    *g_Logger_internalState = (Logger_InternalState_t){
         .streamsArr    = NULL,
         .streamsArrLen = 0,
     };

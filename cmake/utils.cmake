@@ -8,7 +8,7 @@ function(${PROJECT_NAME}_set_compiler_flags)
         add_compile_options(
             /wd5072
         )
-else()
+    else()
         message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")
     endif()
 endfunction()
@@ -55,7 +55,7 @@ function(${PROJECT_NAME}_set_target_c_compiler_flags target)
             /wd5045
             /wd5072
         )
-else()
+    else()
         message(FATAL_ERROR "Unknown C compiler: ${CMAKE_C_COMPILER_ID}")
     endif()
 endfunction()
@@ -80,6 +80,7 @@ function(${PROJECT_NAME}_set_target_cpp_compiler_flags target)
         target_compile_options(${target} PRIVATE
             /Wall
             /WX
+            /wd4514
             /wd4625
             /wd4626
             /wd4710

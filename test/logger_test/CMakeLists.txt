@@ -9,9 +9,15 @@ set(TARGET_SOURCES
 add_executable(${TARGET_NAME}
     ${TARGET_SOURCES}
 )
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(${TARGET_NAME} PRIVATE
+        /wd5045
+    )
+endif()
 
 target_link_libraries(${TARGET_NAME}
     GTest::gmock
+    mock_wrapper
     logger
 )
 
