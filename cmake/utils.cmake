@@ -80,6 +80,7 @@ function(${PROJECT_NAME}_set_target_cpp_compiler_flags target)
         target_compile_options(${target} PRIVATE
             /Wall
             /WX
+            /wd4514
             /wd4625
             /wd4626
             /wd4710
