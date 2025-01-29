@@ -7,6 +7,7 @@ function(${PROJECT_NAME}_set_compiler_flags)
     elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
         add_compile_options(
             /Qspectre
+            /wd5045
             /wd5072
         )
 else()
