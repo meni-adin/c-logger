@@ -1,6 +1,6 @@
 
 // NO_LINT_BEGIN
-#include "logger.h"  // Required to be included before "mock_wrapper.h"
+#include "logger.h"  // Has to be included before "mock_wrapper.h"
 // NO_LINT_END
 
 #include <gmock/gmock.h>
