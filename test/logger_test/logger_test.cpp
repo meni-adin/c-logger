@@ -11,12 +11,12 @@ using namespace std;
 using namespace testing;
 
 class LoggerTest : public ::testing::Test {
-    void SetUp() {
-        mWMock.reset(new MWMock);
+    void SetUp() override {
+        mWMock = make_unique<MWMock>();
         mWMock->SetUp();
     }
 
-    void TearDown() {
+    void TearDown() override {
         mWMock.reset(nullptr);
     }
 };
