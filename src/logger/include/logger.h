@@ -12,7 +12,7 @@ extern "C" {
 #include "c_logger_config.h"
 #include "errors.h"
 
-typedef enum Logger_LoggingLevel_t {
+typedef enum Logger_LoggingLevel_t_ {
     LOGGING_LEVEL_DEBUG,     // Detailed information for debugging
     LOGGING_LEVEL_INFO,      // General informational messages
     LOGGING_LEVEL_WARNING,   // Warnings about potential issues
@@ -21,10 +21,16 @@ typedef enum Logger_LoggingLevel_t {
     LOGGING_LEVEL_COUNT      // Total number of logging levels (upper bound)
 } Logger_LoggingLevel_t;
 
+typedef enum Logger_LoggingFormat_t_ {
+    LOGGING_FORMAT_SCREEN,  //
+    LOGGING_FORMAT_FILE,    //
+    LOGGING_FORMAT_COUNT,   //
+} Logger_LoggingFormat_t;
+
 typedef struct Logger_StreamConfig_t_ {
-    FILE                 *stream;
-    Logger_LoggingLevel_t loggingLevel;
-    bool                  isSupportingColor;
+    FILE                  *stream;
+    Logger_LoggingLevel_t  loggingLevel;
+    Logger_LoggingFormat_t loggingFormat;
 } Logger_StreamConfig_t;
 
 #define LOG_COMMON(logLevel, ...) Logger_log(logLevel, __FILE__, __LINE__, __func__, __VA_ARGS__)
